@@ -25,3 +25,14 @@ build/Release
 # Dependency directory
 # https://www.npmjs.org/doc/misc/npm-faq.html#should-i-check-my-node_modules-folder-into-git
 node_modules
+
+# Local configuration file
+my-config.json
+
+# Auto-generated content
+.data
+public/snapshot
+
+# Vim .swp files
+.*.swp
+
