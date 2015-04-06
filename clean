@@ -1,0 +1,5 @@
+rm -rfv .data/content/*
+rm -rfv .data/tickets/*
+
+rm -rfv public/snapshot/*
+

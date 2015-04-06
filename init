@@ -1,0 +1,7 @@
+mkdir -v .data
+mkdir -v .data/content
+mkdir -v .data/tickets
+
+mkdir -v public
+mkdir -v public/snapshot
+
