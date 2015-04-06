@@ -1,2 +1,1 @@
-# swim
-Simple Web Micropayments (SWM) reference implementation
+This is under development.
