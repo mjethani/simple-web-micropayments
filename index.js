@@ -61,21 +61,32 @@ _class.prototype.router = function () {
     });
   }
 
-  function generateTicket(digest, key) {
-    return {
+  function generateTicket(digest, key, networks) {
+    var payment = self.config.payment;
+
+    if (networks && networks.indexOf(payment.network) === -1) {
+      payment = null;
+    }
+
+    var obj = {
       'date': new Date().toISOString(),
       'content': {
         'digest': digest,
         'digestAlgorithm': 'md5',
         'uri': self.config.content.baseUri + '/' + digest + '/' + key,
       },
-      'payment': {
-        'network': self.config.payment.network,
-        'address': self.config.payment.address,
-        'amount':  self.config.payment.amount,
-      },
       'validity': self.config.validity,
     };
+
+    if (payment) {
+      obj['payment'] = {
+        'network': payment.network,
+        'address': payment.address,
+        'amount':  payment.amount,
+      };
+    }
+
+    return obj;
   }
 
   function saveTicket(envelope, ticketObject, callback) {
@@ -111,14 +122,14 @@ _class.prototype.router = function () {
     return self._paymentsModule.sign(message);
   }
 
-  function prepareTicket(key, callback) {
+  function prepareTicket(key, networks, callback) {
     contentHash(key, function (error, digest) {
       if (error) {
         callback();
         return;
       }
 
-      var ticketObject = generateTicket(digest, key);
+      var ticketObject = generateTicket(digest, key, networks);
 
       var ticket = JSON.stringify(ticketObject);
       var signature = sign(ticket);
@@ -149,7 +160,15 @@ _class.prototype.router = function () {
   }
 
   router.use(function (req, res, next) {
-    prepareTicket(req.path.slice(1), function (error, envelope) {
+    var networks = req.get('X-SWM-Accept-Network');
+
+    if (networks) {
+      networks = networks.split(',').map(function (x) {
+        return x.replace(/^ *| *$/g, '');
+      });
+    }
+
+    prepareTicket(req.path.slice(1), networks, function (error, envelope) {
       if (!envelope) {
         next(error);
         return;

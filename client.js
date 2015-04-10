@@ -4,6 +4,7 @@ var crypto = require('crypto');
 
 var http  = require('http');
 var https = require('https');
+var url_  = require('url');
 
 var ripple = require('ripple-lib');
 
@@ -28,7 +29,7 @@ function makePayment(obj, callback) {
 
   var ticketObject = JSON.parse(object.toString());
 
-  if (ticketObject.payment.network !== 'Ripple') {
+  if (!ticketObject.payment || ticketObject.payment.network !== 'Ripple') {
     callback(new Error('Network not supported.'));
     return;
   }
@@ -142,8 +143,15 @@ function retryUrl(url, ttl, callback) {
 function fetchUrl(url, callback) {
   trace('Fetching ' + url + ' ...');
 
+  var options = url_.parse(url);
+
+  options.headers = {
+    'X-SWM-Accept-Network': 'Ripple'
+  };
+
   var http_ = url.slice(0, 8) === 'https://' ? https : http;
-  http_.get(url, function (response) {
+
+  var request = http_.request(options, function (response) {
     if (response.statusCode === 200) {
       readResponse(response, function (data) {
         callback(null, data);
@@ -162,9 +170,13 @@ function fetchUrl(url, callback) {
     } else {
       callback();
     }
-  }).on('error', function (error) {
+  });
+
+  request.on('error', function (error) {
     callback(error);
   });
+
+  request.end();
 }
 
 function fetchPaidContent(ticketObject, ttl, callback) {

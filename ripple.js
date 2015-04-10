@@ -23,6 +23,10 @@ var _class = function (config) {
 
 util.inherits(_class, events.EventEmitter);
 
+_class.prototype.network = function () {
+  return 'Ripple';
+};
+
 _class.prototype.sign = function (message) {
   var key = this._key;
 
