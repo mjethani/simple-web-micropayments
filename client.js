@@ -91,6 +91,27 @@ function verifyContentHash(data, contentObject) {
   return digest === contentObject.digest;
 }
 
+function getTicket(headers) {
+  var obj = {
+    object: headers['x-swm-object'],
+    signature: headers['x-swm-signature'],
+    ttl: headers['x-swm-ttl'],
+  };
+
+  obj.id = crypto.Hash('sha256')
+      .update(new Buffer(obj.object, 'base64'))
+      .update(new Buffer(obj.signature, 'base64'))
+      .digest().toString('hex');
+
+  obj.ttl = +obj.ttl;
+
+  if (isNaN(obj.ttl) || obj.ttl <= 0) {
+    obj.ttl = 10;
+  }
+
+  return obj;
+}
+
 function readResponse(response, callback) {
   var data = '';
   response.on('data', function (chunk) {
@@ -130,11 +151,16 @@ function fetchUrl(url, callback) {
     } else if (response.statusCode === 402) {
       trace('402 Payment Required');
 
-      readResponse(response, function (data) {
-        handleTicket(JSON.parse(data), callback);
-      });
+      if (response.headers['x-swm']) {
+        handleTicket(getTicket(response.headers), callback);
+
+      } else {
+        readResponse(response, function (data) {
+          callback(null, data);
+        });
+      }
     } else {
-      callback(response.statusCode);
+      callback();
     }
   }).on('error', function (error) {
     callback(error);

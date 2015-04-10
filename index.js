@@ -159,7 +159,12 @@ _class.prototype.router = function () {
 
       res.set('X-SWM', '0.1');
 
-      res.json(envelope);
+      res.set('X-SWM-Object', envelope.object);
+      res.set('X-SWM-Signature', envelope.signature);
+      res.set('X-SWM-ID', envelope.id);
+      res.set('X-SWM-TTL', envelope.ttl);
+
+      res.end();
     });
   });
 
