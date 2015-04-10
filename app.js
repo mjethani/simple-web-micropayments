@@ -17,6 +17,8 @@ var swimConfig = {
   working:   path.join(__dirname, '.data'),
   published: path.join(__dirname, 'public', 'snapshot'),
 
+  view: '402',
+
   'ttl': config.ttl || 60,
 
   'content': {
@@ -48,6 +50,9 @@ swimInstance.initialize(modules);
 swimInstance.run();
 
 var app = express();
+
+app.set('views', path.join(__dirname, 'views'));
+app.set('view engine', 'jade');
 
 app.use(logger('dev'));
 app.use(express.static(path.join(__dirname, 'public')));

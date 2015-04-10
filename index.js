@@ -208,6 +208,27 @@ _class.prototype.router = function () {
     });
   }
 
+  function renderView(res, envelope) {
+    if (self.config.view) {
+      var object = {};
+
+      object.envelope = {
+        object: JSON.parse(new Buffer(envelope.object, 'base64')),
+        id: envelope.id,
+      };
+
+      res.render(self.config.view, object, function (err, html) {
+        if (err) {
+          res.end();
+        } else {
+          res.send(html);
+        }
+      });
+    } else {
+      res.end();
+    }
+  }
+
   router.use(function (req, res, next) {
     var networks = req.get('X-SWM-Accept-Network');
 
@@ -236,7 +257,7 @@ _class.prototype.router = function () {
       res.set('X-SWM-ID', envelope.id);
       res.set('X-SWM-TTL', envelope.ttl);
 
-      res.end();
+      renderView(res, envelope);
     });
   });
 
