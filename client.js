@@ -95,13 +95,16 @@ function verifyContentHash(data, contentObject) {
 function getTicket(headers) {
   var obj = {
     object: headers['x-swm-object'],
-    signature: headers['x-swm-signature'],
     ttl: headers['x-swm-ttl'],
   };
 
+  if (headers['x-swm-signature']) {
+    obj.signature = headers['x-swm-signature'];
+  }
+
   obj.id = crypto.Hash('sha256')
       .update(new Buffer(obj.object, 'base64'))
-      .update(new Buffer(obj.signature, 'base64'))
+      .update(obj.signature ? new Buffer(obj.signature, 'base64') : '')
       .digest().toString('hex');
 
   obj.ttl = +obj.ttl;

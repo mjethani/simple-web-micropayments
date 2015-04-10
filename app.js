@@ -11,21 +11,7 @@ var swim = require('./');
 
 var config = require(process.env.CONFIG_FILE || './config.json');
 
-var network = (function () {
-  if (Object.keys(config).indexOf('bitcoin') !== -1) {
-    return 'Bitcoin';
-  } else if (Object.keys(config).indexOf('ripple') !== -1) {
-    return 'Ripple';
-  }
-})();
-
-assert(network === 'Bitcoin' || network === 'Ripple');
-
-var key = config[network.toLowerCase()].key;
-
-var paymentsModule = swim[network](key);
-
-var swimInstance = swim({
+var swimConfig = {
   root: path.join(__dirname, 'content'),
 
   working:   path.join(__dirname, '.data'),
@@ -37,16 +23,28 @@ var swimInstance = swim({
     baseUri: config.baseUrl + '/snapshot',
   },
 
-  'payment': {
-    'network': network,
-    'address': swim[network].addressFromKey(key),
-    'amount':  config[network.toLowerCase()].price
-  },
+  'payment': [],
 
   'validity': 3600,
+};
+
+var modules = [];
+
+config.payment.forEach(function (option) {
+  var network = option.network;
+
+  swimConfig['payment'].push({
+    'network': network,
+    'address': swim[network].addressFromKey(option.key),
+    'amount':  option.price
+  });
+
+  modules.push(swim[network](option.key));
 });
 
-swimInstance.initialize(paymentsModule);
+var swimInstance = swim(swimConfig);
+
+swimInstance.initialize(modules);
 swimInstance.run();
 
 var app = express();

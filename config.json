@@ -1,7 +1,10 @@
 {
-  "bitcoin": {
-    "key": "<key>",
-    "price": 100000
-  },
+  "payment": [
+    {
+      "network": "Bitcoin",
+      "key": "<key>",
+      "price": 100000
+    }
+  ],
   "baseUrl": "http://example.com"
 }

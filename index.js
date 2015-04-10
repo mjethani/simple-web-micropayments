@@ -7,6 +7,14 @@ var path = require('path');
 
 var express = require('express');
 
+function isObject(value) {
+  return typeof value === 'object' && value !== null;
+}
+
+function isArray(value) {
+  return Object.prototype.toString.call(value) === '[object Array]';
+}
+
 function hash(message, algorithm) {
   return crypto.Hash(algorithm).update(message).digest();
 }
@@ -61,12 +69,41 @@ _class.prototype.router = function () {
     });
   }
 
-  function generateTicket(digest, key, networks) {
-    var payment = self.config.payment;
+  function selectPaymentOption(networks) {
+    var paymentOption = null;
 
-    if (networks && networks.indexOf(payment.network) === -1) {
-      payment = null;
+    var index = -1;
+
+    if (isArray(self.config.payment)) {
+      if (networks) {
+        while (!paymentOption && ++index < networks.length) {
+          self.config.payment.some(function (option) {
+            if (networks[index] === option.network) {
+              return paymentOption = option;
+            }
+          });
+        }
+      } else {
+        paymentOption = self.config.payment[0] || null;
+      }
+    } else if (isObject(self.config.payment)) {
+      if (networks) {
+        while (!paymentOption && ++index < networks.length) {
+          if (networks[index] === self.config.payment.network) {
+            paymentOption = self.config.payment;
+            break;
+          }
+        }
+      } else {
+        paymentOption = self.config.payment;
+      }
     }
+
+    return paymentOption;
+  }
+
+  function generateTicket(digest, key, networks) {
+    var paymentOption = selectPaymentOption(networks);
 
     var obj = {
       'date': new Date().toISOString(),
@@ -78,11 +115,11 @@ _class.prototype.router = function () {
       'validity': self.config.validity,
     };
 
-    if (payment) {
+    if (paymentOption) {
       obj['payment'] = {
-        'network': payment.network,
-        'address': payment.address,
-        'amount':  payment.amount,
+        'network': paymentOption.network,
+        'address': paymentOption.address,
+        'amount':  paymentOption.amount,
       };
     }
 
@@ -118,8 +155,14 @@ _class.prototype.router = function () {
     });
   }
 
-  function sign(message) {
-    return self._paymentsModule.sign(message);
+  function sign(message, network) {
+    if (network) {
+      var module = self._paymentsModulesByNetwork[network];
+      if (module) {
+        return module.sign(message);
+      }
+    }
+    return null;
   }
 
   function prepareTicket(key, networks, callback) {
@@ -132,16 +175,22 @@ _class.prototype.router = function () {
       var ticketObject = generateTicket(digest, key, networks);
 
       var ticket = JSON.stringify(ticketObject);
-      var signature = sign(ticket);
+      var signature = sign(ticket,
+          ticketObject.payment && ticketObject.payment.network);
 
       var object = new Buffer(ticket);
 
       var envelope = {
-        object: base64(object),
-        signature: base64(signature),
-        id: hex(sha256(Buffer.concat([ object, signature ]))),
-        ttl: self.config.ttl
+        object: base64(object)
       };
+
+      if (signature) {
+        envelope.signature = base64(signature);
+      }
+
+      envelope.id = hex(sha256(Buffer.concat([ object,
+                signature || new Buffer(0) ])));
+      envelope.ttl = self.config.ttl;
 
       linkContent(key, envelope.id, function (error) {
         if (error) {
@@ -179,7 +228,11 @@ _class.prototype.router = function () {
       res.set('X-SWM', '0.1');
 
       res.set('X-SWM-Object', envelope.object);
-      res.set('X-SWM-Signature', envelope.signature);
+
+      if (envelope.signature) {
+        res.set('X-SWM-Signature', envelope.signature);
+      }
+
       res.set('X-SWM-ID', envelope.id);
       res.set('X-SWM-TTL', envelope.ttl);
 
@@ -190,8 +243,15 @@ _class.prototype.router = function () {
   return router;
 };
 
-_class.prototype.initialize = function (paymentsModule) {
-  this._paymentsModule = paymentsModule;
+_class.prototype.initialize = function (paymentsModules) {
+  var self = this;
+
+  self._paymentsModules = paymentsModules || [];
+
+  self._paymentsModulesByNetwork = {};
+  self._paymentsModules.forEach(function (module) {
+    self._paymentsModulesByNetwork[module.network()] = module;
+  });
 };
 
 _class.prototype.run = function () {
@@ -268,19 +328,23 @@ _class.prototype.run = function () {
   }
 
   function check() {
-    self._paymentsModule.check(function (payments) {
-      if (payments) {
-        payments.forEach(function (paymentInfo) {
-          handlePayment(paymentInfo);
-        });
-      }
+    self._paymentsModules.forEach(function (module) {
+      module.check(function (payments) {
+        if (payments) {
+          payments.forEach(function (paymentInfo) {
+            handlePayment(paymentInfo);
+          });
+        }
 
-      setTimeout(check, 1000 * Math.max(60, self.config.ttl | 0));
+        setTimeout(check, 1000 * Math.max(60, self.config.ttl | 0));
+      });
     });
   }
 
-  self._paymentsModule.on('payment', function (paymentInfo) {
-    handlePayment(paymentInfo);
+  self._paymentsModules.forEach(function (module) {
+    module.on('payment', function (paymentInfo) {
+      handlePayment(paymentInfo);
+    });
   });
 
   check();
