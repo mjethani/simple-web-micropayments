@@ -36,3 +36,6 @@ public/snapshot
 # Vim .swp files
 .*.swp
 
+# Wiki
+wiki/
+
