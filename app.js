@@ -9,9 +9,9 @@ var logger = require('morgan');
 
 var swim = require('./');
 
-var config = require(process.env.CONFIG_FILE || './config.json');
+var appConfig = require(process.env.CONFIG_FILE || './config.json');
 
-var swimConfig = {
+var config = {
   root: path.join(__dirname, 'content'),
 
   working:   path.join(__dirname, '.data'),
@@ -19,10 +19,10 @@ var swimConfig = {
 
   view: '402',
 
-  'ttl': config.ttl || 60,
+  'ttl': appConfig.ttl || 60,
 
   'content': {
-    baseUri: config.baseUrl + '/snapshot',
+    baseUri: appConfig.baseUrl + '/snapshot',
   },
 
   'payment': [],
@@ -32,10 +32,10 @@ var swimConfig = {
 
 var modules = [];
 
-config.payment.forEach(function (option) {
+appConfig.payment.forEach(function (option) {
   var network = option.network;
 
-  swimConfig['payment'].push({
+  config['payment'].push({
     'network': network,
     'address': swim[network].addressFromKey(option.key),
     'amount':  option.price
@@ -44,10 +44,10 @@ config.payment.forEach(function (option) {
   modules.push(swim[network](option.key));
 });
 
-var swimInstance = swim(swimConfig);
+var m = swim(config);
 
-swimInstance.initialize(modules);
-swimInstance.run();
+m.initialize(modules);
+m.run();
 
 var app = express();
 
@@ -57,7 +57,7 @@ app.set('view engine', 'jade');
 app.use(logger('dev'));
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use(swimInstance.router());
+app.use(m.router());
 
 module.exports = app;
 

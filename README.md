@@ -103,7 +103,7 @@ var express = require('express');
 var swim = require('/path/to/swim/');
 
 // Module configuration
-var swimConfig = {
+var config = {
   ...
 };
 
@@ -112,10 +112,10 @@ var modules = [
   ...
 ];
 
-var swimInstance = swim(swimConfig);
+var m = swim(config);
 
-swimInstance.initialize(modules);
-swimInstance.run();
+m.initialize(modules);
+m.run();
 
 var app = express();
 
@@ -123,7 +123,7 @@ var app = express();
 
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use(swimInstance.router());
+app.use(m.router());
 ```
 
 Refer to the app.js file for a working example.
