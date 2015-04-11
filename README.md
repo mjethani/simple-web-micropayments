@@ -14,39 +14,36 @@ $
 
 ### Configuration
 
-Edit the config.json file:
+ 1.  Edit the config.json file:
 
-```javascript
-{
-  "payment": [
-    {
-      "network": "Bitcoin",
-      "key": "<key>",
-      "price": 100000
-    }
-  ],
-  "baseUrl": "http://example.com"
-}
-```
+  ```javascript
+  {
+    "payment": [
+      {
+        "network": "Bitcoin",
+        "key": "<key>",
+        "price": 100000
+      }
+    ],
+    "baseUrl": "http://example.com"
+  }
+  ```
 
-Change `<key>` to your Bitcoin private key. e.g. `5K7WRapB9oai1UZuQaSokQhT5hKs5dkB1yZoVtLUjBkeUjWmEmm`
+  Change `<key>` to your Bitcoin private key. e.g. `5K7WRapB9oai1UZuQaSokQhT5hKs5dkB1yZoVtLUjBkeUjWmEmm`
 
-[1]:https://en.bitcoin.it/wiki/Wallet_import_format
-[2]:https://en.bitcoin.it/wiki/Satoshi_(unit)
+ 2.  Run the init script:
 
-Run the init script:
+  ```console
+  $ . ./init
+  mkdir: created directory '.data'
+  mkdir: created directory '.data/content'
+  mkdir: created directory '.data/tickets'
+  mkdir: public: File exists
+  mkdir: created directory 'public/snapshot'
+  $ 
+  ```
 
-```console
-$ . ./init
-mkdir: created directory '.data'
-mkdir: created directory '.data/content'
-mkdir: created directory '.data/tickets'
-mkdir: public: File exists
-mkdir: created directory 'public/snapshot'
-$ 
-```
-
-Run `npm install` to install any dependencies.
+ 3.  Run `npm install` to install any dependencies.
 
 ### Demo
 
@@ -61,6 +58,8 @@ $ npm start
 ```
 
 Then load [http://localhost:3000/hello-world.txt](http://localhost:3000/hello-world.txt) in your browser. You should get a "402 Payment Required" message.
+
+#### Make a payment
 
 You can make a Bitcoin payment using the pay.js script.
 
@@ -78,7 +77,7 @@ e.g.
 var key = '5HqoUvVvQjVeH9ZgDgRrw1K9z8voqsUT7ifAYRicBTRfa9nRhmM';
 ```
 
-Pro tip: It's best to [create a new address][4] for this.
+__Pro tip:__ It's best to [create a new address][4] for this.
 
 [4]:https://www.bitaddress.org/bitaddress.org-v2.9.8-SHA256-2c5d16dbcde600147162172090d940fd9646981b7d751d9bddfc5ef383f89308.html
 
