@@ -76,13 +76,27 @@ usage: node pay.js <recipient> <amount> [<tag>]
 $ 
 ```
 
-First edit the pay.js file and set the key to your Bitcoin private key:
+First edit the pay.js file and set the key to your Bitcoin private key.
+
+e.g.
 
 ```javascript
-var key = '5K7WRapB9oai1UZuQaSokQhT5hKs5dkB1yZoVtLUjBkeUjWmEmm';
+var key = '5HqoUvVvQjVeH9ZgDgRrw1K9z8voqsUT7ifAYRicBTRfa9nRhmM';
 ```
 
+Pro tip: It's best to [create a new address][4] for this.
+
+[4]:https://www.bitaddress.org/bitaddress.org-v2.9.8-SHA256-2c5d16dbcde600147162172090d940fd9646981b7d751d9bddfc5ef383f89308.html
+
 When you run the script, set `<tag>` to the ID given on the 402 page; set `<amount>` to the amount in satoshis (e.g. `100000` for 0.001 BTC). If the payment succeeds, the script will print out the transaction hash.
+
+e.g.
+
+```console
+$ node pay.js 1NZc7XcToQ7fnokgYf4iAJmRfUnfa7gqpz 100000 1a8211babd8d37ac6f9af04f44ac65d625084a3e348a7a8114726fa43989d3db
+b7fe2f8a2f00a1a66a5f8f9dce2812569925efea436f170a126faf7654a94b5d
+$ 
+```
 
 After about a minute, try to access [http://localhost:3000/snapshot/746308829575e17c3331bbcb00c0898b/hello-world.txt](http://localhost:3000/snapshot/746308829575e17c3331bbcb00c0898b/hello-world.txt) in your browser. It should return a text document saying "Hello, world!" This means your payment was accepted.
 
@@ -95,10 +109,12 @@ var express = require('express');
 
 var swim = require('/path/to/swim/');
 
+// Module configuration
 var swimConfig = {
   ...
 };
 
+// Payments modules (e.g. swim.Bitcoin and swim.Ripple instances)
 var modules = [
   ...
 ];
@@ -111,6 +127,8 @@ swimInstance.run();
 var app = express();
 
 ...
+
+app.use(express.static(path.join(__dirname, 'public')));
 
 app.use(swimInstance.router());
 ```
