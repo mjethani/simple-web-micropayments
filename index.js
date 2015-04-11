@@ -36,8 +36,20 @@ function base64(buffer) {
 }
 
 function fileHash(filename, algorithm, callback) {
-  fs.readFile(filename, function (error, data) {
-    callback(error, error ? null : hex(hash(data, algorithm)));
+  var hash = crypto.Hash(algorithm);
+
+  var stream = fs.createReadStream(filename);
+
+  stream.on('data', function (data) {
+    hash.update(data);
+  });
+
+  stream.on('error', function (error) {
+    callback(error);
+  });
+
+  stream.on('end', function () {
+    callback(null, hex(hash.digest()));
   });
 }
 
