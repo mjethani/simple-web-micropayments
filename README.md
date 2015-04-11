@@ -29,11 +29,7 @@ Edit the config.json file:
 }
 ```
 
-Change `<key>` to your Bitcoin private key in [Wallet Import Format][1]. e.g. `5K7WRapB9oai1UZuQaSokQhT5hKs5dkB1yZoVtLUjBkeUjWmEmm`
-
-The price is set to 100,000 [satoshis][2] by default. You can change it to the amount you wish to charge for your content.
-
-Set `baseUrl` to the root of your website.
+Change `<key>` to your Bitcoin private key. e.g. `5K7WRapB9oai1UZuQaSokQhT5hKs5dkB1yZoVtLUjBkeUjWmEmm`
 
 [1]:https://en.bitcoin.it/wiki/Wallet_import_format
 [2]:https://en.bitcoin.it/wiki/Satoshi_(unit)
@@ -51,8 +47,6 @@ $
 ```
 
 Run `npm install` to install any dependencies.
-
-Now you're ready.
 
 ### Demo
 
