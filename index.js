@@ -360,7 +360,30 @@ _class.prototype.run = function () {
     }
   }
 
+  function clean() {
+    fs.readdir(path.join(self.config.working, 'tickets'),
+        function (error, files) {
+      files = files || [];
+      files = files.filter(function (x) { return x.indexOf('.') === -1 });
+      files.forEach(function (id) {
+        var ticketObject = ticket(id);
+        var expired = ticketObject && +new Date(ticketObject.date)
+              + ticketObject.validity * 1000 < +new Date();
+        if (expired) {
+          fs.rename(path.join(self.config.working, 'tickets', id),
+              path.join(self.config.working, 'tickets', id + '.expired'),
+              function () {});
+          fs.rename(path.join(self.config.working, 'content', id),
+              path.join(self.config.working, 'content', id + '.expired'),
+              function () {});
+        }
+      });
+    });
+  }
+
   function check() {
+    var count = 0;
+
     self._paymentsModules.forEach(function (module) {
       module.check(function (payments) {
         if (payments) {
@@ -369,9 +392,13 @@ _class.prototype.run = function () {
           });
         }
 
-        setTimeout(check, 1000 * Math.max(60, self.config.ttl | 0));
+        if (++count === self._paymentsModules.length) {
+          setTimeout(check, 1000 * Math.max(60, self.config.ttl | 0));
+        }
       });
     });
+
+    clean();
   }
 
   self._paymentsModules.forEach(function (module) {
