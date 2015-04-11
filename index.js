@@ -360,24 +360,33 @@ _class.prototype.run = function () {
     }
   }
 
+  function ticketExpired(id) {
+    var ticketObject = ticket(id);
+    return ticketObject && +new Date(ticketObject.date)
+          + ticketObject.validity * 1000 < +new Date();
+  }
+
+  function deleteExpiredTicket(id) {
+    fs.rename(path.join(self.config.working, 'tickets', id),
+        path.join(self.config.working, 'tickets', id + '.expired'),
+        function () {});
+    fs.rename(path.join(self.config.working, 'content', id),
+        path.join(self.config.working, 'content', id + '.expired'),
+        function () {});
+  }
+
   function clean() {
     fs.readdir(path.join(self.config.working, 'tickets'),
         function (error, files) {
-      files = files || [];
-      files = files.filter(function (x) { return x.indexOf('.') === -1 });
-      files.forEach(function (id) {
-        var ticketObject = ticket(id);
-        var expired = ticketObject && +new Date(ticketObject.date)
-              + ticketObject.validity * 1000 < +new Date();
-        if (expired) {
-          fs.rename(path.join(self.config.working, 'tickets', id),
-              path.join(self.config.working, 'tickets', id + '.expired'),
-              function () {});
-          fs.rename(path.join(self.config.working, 'content', id),
-              path.join(self.config.working, 'content', id + '.expired'),
-              function () {});
-        }
-      });
+      if (files) {
+        files.filter(function (x) {
+          return x.indexOf('.') === -1;
+        }).forEach(function (id) {
+          if (ticketExpired(id)) {
+            deleteExpiredTicket(id);
+          }
+        });
+      }
     });
   }
 
