@@ -286,16 +286,16 @@ _class.prototype.initialize = function (paymentsModules) {
     self._paymentsModulesByNetwork[module.network()] = module;
   });
 
-  var paths = [
+  var dirs = [
     self.config.working,
     path.join(self.config.working, 'content'),
     path.join(self.config.working, 'tickets'),
     self.config.published,
   ];
 
-  paths.forEach(function (path) {
+  dirs.forEach(function (d) {
     try {
-      fs.mkdirSync(path, 0755);
+      fs.mkdirSync(d, 0755);
     } catch (error) {
       if (error.code !== 'EEXIST') {
         throw error;
