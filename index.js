@@ -247,7 +247,7 @@ _class.prototype.router = function () {
     }
   }
 
-  router.use(function (req, res, next) {
+  router.use('/:key', function (req, res, next) {
     var networks = req.get('X-SWM-Accept-Network');
 
     if (networks) {
@@ -256,7 +256,7 @@ _class.prototype.router = function () {
       });
     }
 
-    prepareTicket(req.path.slice(1), networks,
+    prepareTicket(req.params.key, networks,
         function (error, envelope, ticketObject) {
       if (!envelope) {
         next(error);
