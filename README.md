@@ -37,10 +37,12 @@ $
 Start the server:
 
 ```console
-$ npm start
+$ DEBUG=swim:server npm start
 
 > swim@0.0.0 start /Users/bob/swim
 > node ./bin/www
+
+  swim:server Listening on port 3000 +0ms
 
 ```
 
