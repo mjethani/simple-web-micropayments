@@ -1,14 +1,14 @@
 This is a reference implementation of the Simple Web Micropayments (SWM) scheme.
 
 ```console
-$ git clone https://github.com/mjethani/swim.git
-Cloning into 'swim'...
+$ git clone https://github.com/mjethani/swm.git
+Cloning into 'swm'...
 remote: Counting objects: 63, done.
 remote: Compressing objects: 100% (43/43), done.
 remote: Total 63 (delta 23), reused 50 (delta 13), pack-reused 0
 Unpacking objects: 100% (63/63), done.
 Checking connectivity... done
-$ cd swim
+$ cd swm
 $ 
 ```
 
@@ -52,7 +52,7 @@ Start the server:
 ```console
 $ npm start
 
-> swim@0.0.0 start /Users/bob/swim
+> swm@0.0.0 start /Users/bob/swm
 > node ./bin/www
 
 ```
@@ -100,19 +100,19 @@ You can plug this into your own [Express][3] app.
 ```javascript
 var express = require('express');
 
-var swim = require('/path/to/swim/');
+var swm = require('/path/to/swm/');
 
 // Module configuration
 var config = {
   ...
 };
 
-// Payments modules (e.g. swim.Bitcoin and swim.Ripple instances)
+// Payments modules (e.g. swm.Bitcoin and swm.Ripple instances)
 var modules = [
   ...
 ];
 
-var m = swim(config);
+var m = swm(config);
 
 m.initialize(modules);
 m.run();

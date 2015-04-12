@@ -36,12 +36,3 @@ html
         b Validity: 
         span #{envelope.object.validity} seconds
     hr
-    p#promise
-      span I promise to make the content with digest #{envelope.object.content.digest} (#{envelope.object.content.digestAlgorithm}) available at #{envelope.object.content.uri} upon receipt of 
-      if envelope.object.payment.network === 'Bitcoin'
-        span #{envelope.object.payment.amount / 100000000} BTC
-      else if envelope.object.payment.network === 'Ripple'
-        span #{envelope.object.payment.amount / 1000000} XRP
-      span  at the #{envelope.object.payment.network} address #{envelope.object.payment.address}.
-      span  You must include the ticket ID #{envelope.id} in your payment transaction.
-      span  This offer is valid through #{new Date(+new Date(envelope.object.date) + envelope.object.validity * 1000).toUTCString()}.

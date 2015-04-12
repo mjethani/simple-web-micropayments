@@ -1,10 +1,27 @@
 {
-  "name": "swim",
+  "name": "swm",
   "version": "0.0.0",
   "private": true,
+  "description": "Simple Web Micropayments (SWM) reference implementation",
+  "author": {
+    "name": "Manish Jethani",
+    "email": "manish.jethani@gmail.com",
+    "url": "http://manishjethani.com/"
+  },
   "scripts": {
     "start": "node ./bin/www"
   },
+  "keywords": [
+    "micropayments",
+    "402",
+    "Bitcoin",
+    "Ripple"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/mjethani/swm.git"
+  },
+  "engines": { "node": ">=0.12.0" },
   "dependencies": {
     "bigi": "^1.4.0",
     "bitcoinjs-lib": "^1.5.6",

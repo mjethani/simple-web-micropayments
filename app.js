@@ -7,7 +7,7 @@ var path = require('path');
 var express = require('express');
 var logger = require('morgan');
 
-var swim = require('./');
+var swm = require('./');
 
 var appConfig = require(process.env.CONFIG_FILE || './config.json');
 
@@ -37,14 +37,14 @@ appConfig.payment.forEach(function (option) {
 
   config['payment'].push({
     'network': network,
-    'address': swim[network].addressFromKey(option.key),
+    'address': swm[network].addressFromKey(option.key),
     'amount':  option.price
   });
 
-  modules.push(swim[network](option.key));
+  modules.push(swm[network](option.key));
 });
 
-var m = swim(config);
+var m = swm(config);
 
 m.initialize(modules);
 m.run();
