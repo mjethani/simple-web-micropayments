@@ -8,7 +8,7 @@ var url_  = require('url');
 
 var ripple = require('ripple-lib');
 
-var swim = require('./');
+var swim = require('../');
 
 var key = '';
 

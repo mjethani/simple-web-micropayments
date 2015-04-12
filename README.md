@@ -51,7 +51,7 @@ Then load [http://localhost:3000/hello-world.txt](http://localhost:3000/hello-wo
 You can make a Bitcoin payment using the pay.js script.
 
 ```console
-$ node pay.js
+$ node extras/pay.js
 usage: node pay.js <recipient> <amount> [<tag>]
 $ 
 ```
@@ -73,7 +73,7 @@ When you run the script, set `<tag>` to the ID given on the 402 page; set `<amou
 e.g.
 
 ```console
-$ node pay.js 1NZc7XcToQ7fnokgYf4iAJmRfUnfa7gqpz 100000 1a8211babd8d37ac6f9af04f44ac65d625084a3e348a7a8114726fa43989d3db
+$ node extras/pay.js 1NZc7XcToQ7fnokgYf4iAJmRfUnfa7gqpz 100000 1a8211babd8d37ac6f9af04f44ac65d625084a3e348a7a8114726fa43989d3db
 b7fe2f8a2f00a1a66a5f8f9dce2812569925efea436f170a126faf7654a94b5d
 $ 
 ```
