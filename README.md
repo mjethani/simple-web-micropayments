@@ -1,14 +1,14 @@
 [https://blog.manishjethani.com/simple-web-micropayments](https://blog.manishjethani.com/simple-web-micropayments)
 
 ```console
-$ git clone https://github.com/mjethani/swm.git
-Cloning into 'swm'...
+$ git clone https://github.com/mjethani/swim.git
+Cloning into 'swim'...
 remote: Counting objects: 63, done.
 remote: Compressing objects: 100% (43/43), done.
 remote: Total 63 (delta 23), reused 50 (delta 13), pack-reused 0
 Unpacking objects: 100% (63/63), done.
 Checking connectivity... done
-$ cd swm
+$ cd swim
 $ 
 ```
 
@@ -40,7 +40,7 @@ Start the server:
 ```console
 $ npm start
 
-> swm@0.0.0 start /Users/bob/swm
+> swim@0.0.0 start /Users/bob/swim
 > node ./bin/www
 
 ```
@@ -90,7 +90,7 @@ var path = require('path');
 
 var express = require('express');
 
-var micropayments = require('/path/to/swm/');
+var swim = require('/path/to/swim/');
 
 ...
 
@@ -120,10 +120,10 @@ var config = {
 
 // Payments modules
 var modules = [
-  micropayments.Bitcoin('5K7WRapB9oai1UZuQaSokQhT5hKs5dkB1yZoVtLUjBkeUjWmEmm'),
+  swim.Bitcoin('5K7WRapB9oai1UZuQaSokQhT5hKs5dkB1yZoVtLUjBkeUjWmEmm'),
 ];
 
-var instance = micropayments(config);
+var instance = swim(config);
 
 instance.initialize(modules);
 instance.run();

@@ -1,5 +1,5 @@
 {
-  "name": "swm",
+  "name": "swim",
   "version": "0.0.0",
   "private": true,
   "description": "Simple Web Micropayments (SWM) reference implementation",
@@ -19,7 +19,7 @@
   ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/mjethani/swm.git"
+    "url": "https://github.com/mjethani/swim.git"
   },
   "engines": { "node": ">=0.12.0" },
   "dependencies": {

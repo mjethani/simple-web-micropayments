@@ -5,7 +5,7 @@ var path = require('path');
 var express = require('express');
 var logger = require('morgan');
 
-var micropayments = require('./');
+var swim = require('./');
 
 var appConfig = require(process.env.CONFIG_FILE || './config.json');
 
@@ -35,14 +35,14 @@ appConfig.payment.forEach(function (option) {
 
   config['payment'].push({
     'network': network,
-    'address': micropayments[network].addressFromKey(option.key),
+    'address': swim[network].addressFromKey(option.key),
     'amount':  option.price
   });
 
-  modules.push(micropayments[network](option.key));
+  modules.push(swim[network](option.key));
 });
 
-var instance = micropayments(config);
+var instance = swim(config);
 
 instance.initialize(modules);
 instance.run();
