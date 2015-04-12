@@ -5,6 +5,8 @@ var path = require('path');
 var express = require('express');
 var logger = require('morgan');
 
+var debug = require('debug')('swim:app');
+
 var swim = require('./');
 
 var _config = null;
@@ -70,6 +72,10 @@ if (_config.payment) {
   });
 }
 
+if (config.payment.length === 0) {
+  console.error('WARNING: No payment information available.');
+}
+
 var instance = swim(config);
 
 instance.initialize(modules);
@@ -84,6 +90,8 @@ app.use(logger('dev'));
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', instance.router());
+
+debug('Serving from ' + path.resolve(config.root));
 
 module.exports = app;
 
