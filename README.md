@@ -86,6 +86,8 @@ After about a minute, try to access [http://localhost:3000/snapshot/746308829575
 You can plug this into your own [Express][3] app.
 
 ```javascript
+var path = require('path');
+
 var express = require('express');
 
 var swm = require('/path/to/swm/');
@@ -130,11 +132,11 @@ m.run();
 
 var app = express();
 
-...
-
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use(m.router());
+
+module.exports = app;
 ```
 
 Refer to the app.js file for a working example.
