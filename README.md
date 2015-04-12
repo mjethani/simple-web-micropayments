@@ -1,4 +1,4 @@
-This is a reference implementation of the Simple Web Micropayments (SWM) scheme.
+[https://blog.manishjethani.com/simple-web-micropayments](https://blog.manishjethani.com/simple-web-micropayments)
 
 ```console
 $ git clone https://github.com/mjethani/swm.git
