@@ -124,7 +124,8 @@ _class.prototype.router = function () {
         'digestAlgorithm': 'md5',
         'uri': self.config.content.baseUri + '/' + digest + '/' + key,
       },
-      'validity': self.config.validity,
+      'validity': isNaN(self.config.validity) ? 3600
+          : Math.max(0, self.config.validity | 0),
     };
 
     if (paymentOption) {
