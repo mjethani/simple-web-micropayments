@@ -2,6 +2,8 @@
 
 # usage: ./start.sh
 
+cd `dirname $0`/.. || exit 1
+
 export CONFIG_FILE=./my-config.json
 export PORT=10000
 DEBUG=swim:* ./bin/www 2>&1 \
