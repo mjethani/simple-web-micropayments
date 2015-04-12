@@ -92,6 +92,8 @@ var express = require('express');
 
 var swm = require('/path/to/swm/');
 
+...
+
 // Module configuration
 var config = {
   // Where your 402-protected content resides
@@ -130,13 +132,17 @@ var m = swm(config);
 m.initialize(modules);
 m.run();
 
+...
+
 var app = express();
+
+...
 
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use(m.router());
 
-module.exports = app;
+...
 ```
 
 Refer to the app.js file for a working example.
