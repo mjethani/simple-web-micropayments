@@ -12,11 +12,15 @@ var swim = require('./');
 var _config = null;
 
 try {
-  _config = require(process.env.CONFIG_FILE
-        ? path.resolve(process.cwd(), process.env.CONFIG_FILE)
-        : './config.json');
+  _config = require(path.resolve(process.cwd(),
+        process.env.CONFIG_FILE || 'config.json'));
 } catch (error) {
-  console.error('Invalid config');
+  if (error.code === 'MODULE_NOT_FOUND') {
+    console.error(process.env.CONFIG_FILE ? 'Config file not found'
+        : 'No config.json available');
+  } else {
+    console.error('Invalid config');
+  }
   process.exit(1);
 }
 
