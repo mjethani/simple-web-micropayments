@@ -104,12 +104,35 @@ var swm = require('/path/to/swm/');
 
 // Module configuration
 var config = {
-  ...
+  // Where your 402-protected content resides
+  root: path.join(__dirname, 'content'),
+
+  // Where the SWM module keeps its files
+  working:   path.join(__dirname, '.data'),
+  // Where to publish content
+  published: path.join(__dirname, 'public', 'snapshot'),
+
+  'content': {
+    baseUri: 'http://example.com/snapshot',
+  },
+
+  // Payment options
+  'payment': [
+    {
+      'network': 'Bitcoin',
+      'address': '1NZc7XcToQ7fnokgYf4iAJmRfUnfa7gqpz',
+      'amount':  100000
+    },
+  ],
+
+  'validity': 3600,
+
+  'ttl': 10,
 };
 
 // Payments modules (e.g. swm.Bitcoin and swm.Ripple instances)
 var modules = [
-  ...
+  swm.Bitcoin('5K7WRapB9oai1UZuQaSokQhT5hKs5dkB1yZoVtLUjBkeUjWmEmm'),
 ];
 
 var m = swm(config);
