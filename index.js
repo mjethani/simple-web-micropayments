@@ -464,7 +464,7 @@ module.exports = function (config) {
   return new _class(config);
 };
 
-module.exports.Bitcoin = require('./bitcoin');
-module.exports.Ripple  = require('./ripple');
+module.exports.Bitcoin = require('./modules/bitcoin');
+module.exports.Ripple  = require('./modules/ripple');
 
 // vim: et ts=2 sw=2
