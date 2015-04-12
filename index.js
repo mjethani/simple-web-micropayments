@@ -212,7 +212,7 @@ _class.prototype.router = function () {
             if (error) {
               callback(error);
             } else {
-              callback(null, envelope);
+              callback(null, envelope, ticketObject);
             }
           });
         }
@@ -220,13 +220,13 @@ _class.prototype.router = function () {
     });
   }
 
-  function renderView(res, envelope) {
+  function renderView(res, envelope, ticketObject) {
     if (self.config.view) {
-      var object = {};
-
-      object.envelope = {
-        object: JSON.parse(new Buffer(envelope.object, 'base64')),
-        id: envelope.id,
+      var object = {
+        envelope: {
+          object: ticketObject,
+          id: envelope.id
+        }
       };
 
       res.render(self.config.view, object, function (err, html) {
@@ -250,7 +250,8 @@ _class.prototype.router = function () {
       });
     }
 
-    prepareTicket(req.path.slice(1), networks, function (error, envelope) {
+    prepareTicket(req.path.slice(1), networks,
+        function (error, envelope, ticketObject) {
       if (!envelope) {
         next(error);
         return;
@@ -269,7 +270,7 @@ _class.prototype.router = function () {
       res.set('X-SWM-ID', envelope.id);
       res.set('X-SWM-TTL', envelope.ttl);
 
-      renderView(res, envelope);
+      renderView(res, envelope, ticketObject);
     });
   });
 
