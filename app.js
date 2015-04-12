@@ -7,20 +7,34 @@ var logger = require('morgan');
 
 var swim = require('./');
 
-var appConfig = require(process.env.CONFIG_FILE || './config.json');
+var _config = null;
+
+try {
+  _config = require(process.env.CONFIG_FILE
+        ? path.resolve(process.cwd(), process.env.CONFIG_FILE)
+        : './config.json');
+} catch (error) {
+  console.error('Invalid config');
+  process.exit(1);
+}
+
+function getPort() {
+  return process.env.PORT || 3000;
+}
 
 var config = {
-  root: path.join(__dirname, 'content'),
+  root: process.argv[2] || _config.root || path.join(__dirname, 'content'),
 
   working:   path.join(__dirname, '.data'),
   published: path.join(__dirname, 'public', 'snapshot'),
 
   view: '402',
 
-  'ttl': appConfig.ttl || 60,
+  'ttl': _config.ttl || 10,
 
   'content': {
-    baseUri: appConfig.baseUrl + '/snapshot',
+    baseUri: (_config.baseUrl || 'http://localhost:' + getPort())
+               + '/snapshot',
   },
 
   'payment': [],
@@ -30,17 +44,31 @@ var config = {
 
 var modules = [];
 
-appConfig.payment.forEach(function (option) {
-  var network = option.network;
+if (_config.payment) {
+  _config.payment.forEach(function (option) {
+    var network = option.network;
 
-  config['payment'].push({
-    'network': network,
-    'address': swim[network].addressFromKey(option.key),
-    'amount':  option.price
+    var address = null;
+
+    try {
+      address = swim[network].addressFromKey(option.key);
+    } catch (error) {
+      console.error('WARNING: Invalid private key ' + option.key
+          + '. Skipping.');
+      return;
+    }
+
+    var amount = option.price;
+
+    config['payment'].push({
+      'network': network,
+      'address': address,
+      'amount':  amount
+    });
+
+    modules.push(swim[network](option.key));
   });
-
-  modules.push(swim[network](option.key));
-});
+}
 
 var instance = swim(config);
 

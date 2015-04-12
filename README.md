@@ -24,8 +24,7 @@ $
         "key": "<key>",
         "price": 100000
       }
-    ],
-    "baseUrl": "http://example.com"
+    ]
   }
   ```
 
