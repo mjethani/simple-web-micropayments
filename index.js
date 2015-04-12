@@ -60,6 +60,10 @@ var _class = function (config) {
 _class.prototype.router = function () {
   var self = this;
 
+  if (self._router) {
+    return self._router;
+  }
+
   var router = express.Router();
 
   var cache = {};
@@ -275,6 +279,8 @@ _class.prototype.router = function () {
       renderView(res, envelope, ticketObject);
     });
   });
+
+  self._router = router;
 
   return router;
 };
