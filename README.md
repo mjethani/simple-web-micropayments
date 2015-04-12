@@ -90,7 +90,7 @@ var path = require('path');
 
 var express = require('express');
 
-var swm = require('/path/to/swm/');
+var micropayments = require('/path/to/swm/');
 
 ...
 
@@ -101,7 +101,7 @@ var config = {
 
   // Where the SWM module keeps its files
   working:   path.join(__dirname, '.data'),
-  // Where to publish content
+  // Where to publish the content once a payment has been received
   published: path.join(__dirname, 'public', 'snapshot'),
 
   'content': {
@@ -118,15 +118,15 @@ var config = {
   ],
 };
 
-// Payments modules (e.g. swm.Bitcoin and swm.Ripple instances)
+// Payments modules
 var modules = [
-  swm.Bitcoin('5K7WRapB9oai1UZuQaSokQhT5hKs5dkB1yZoVtLUjBkeUjWmEmm'),
+  micropayments.Bitcoin('5K7WRapB9oai1UZuQaSokQhT5hKs5dkB1yZoVtLUjBkeUjWmEmm'),
 ];
 
-var m = swm(config);
+var instance = micropayments(config);
 
-m.initialize(modules);
-m.run();
+instance.initialize(modules);
+instance.run();
 
 ...
 
@@ -136,7 +136,7 @@ var app = express();
 
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use(m.router());
+app.use(instance.router());
 
 ...
 ```

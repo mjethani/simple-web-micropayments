@@ -8,7 +8,7 @@ var url_  = require('url');
 
 var ripple = require('ripple-lib');
 
-var swm = require('./');
+var micropayments = require('./');
 
 var key = '';
 
@@ -36,7 +36,8 @@ function makePayment(obj, callback) {
 
   var paymentAddress = ticketObject.payment.address;
 
-  if (!swm.Ripple.verifySignature(signature, object, paymentAddress)) {
+  if (!micropayments.Ripple.verifySignature(signature, object,
+        paymentAddress)) {
     callback(new Error('Signature does not verify!'));
   }
 

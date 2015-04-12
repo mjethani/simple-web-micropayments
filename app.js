@@ -5,7 +5,7 @@ var path = require('path');
 var express = require('express');
 var logger = require('morgan');
 
-var swm = require('./');
+var micropayments = require('./');
 
 var appConfig = require(process.env.CONFIG_FILE || './config.json');
 
@@ -35,17 +35,17 @@ appConfig.payment.forEach(function (option) {
 
   config['payment'].push({
     'network': network,
-    'address': swm[network].addressFromKey(option.key),
+    'address': micropayments[network].addressFromKey(option.key),
     'amount':  option.price
   });
 
-  modules.push(swm[network](option.key));
+  modules.push(micropayments[network](option.key));
 });
 
-var m = swm(config);
+var instance = micropayments(config);
 
-m.initialize(modules);
-m.run();
+instance.initialize(modules);
+instance.run();
 
 var app = express();
 
@@ -55,7 +55,7 @@ app.set('view engine', 'jade');
 app.use(logger('dev'));
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use(m.router());
+app.use(instance.router());
 
 module.exports = app;
 
