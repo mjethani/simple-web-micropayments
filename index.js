@@ -54,6 +54,21 @@ function fileHash(filename, algorithm, callback) {
 }
 
 var _class = function (config) {
+  if (!config || !config.root || !config.working || !config.published
+      || !config.content || !config.content.baseUri) {
+    throw new Error('Invalid config');
+  }
+
+  var options = isArray(config.payment) ? config.payment
+      : isObject(config.payment) ? [ config.payment ] : [];
+
+  options.forEach(function (option) {
+    if (!option.network || !option.address
+        || option.amount % 1 !== 0 || option.amount < 0) {
+      throw new Error('Invalid config');
+    }
+  });
+
   this.config = config;
 };
 
