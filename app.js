@@ -9,6 +9,15 @@ var debug = require('debug')('swim:app');
 
 var swim = require('./');
 
+function getRoot() {
+  return process.argv[2] && process.argv[2].match(/^--root=/g)
+      && process.argv[2].match(/^[^=]*=(.*)/)[1];
+}
+
+function getPort() {
+  return process.env.PORT || 3000;
+}
+
 var _config = null;
 
 try {
@@ -24,12 +33,8 @@ try {
   process.exit(1);
 }
 
-function getPort() {
-  return process.env.PORT || 3000;
-}
-
 var config = {
-  root: process.argv[2] || _config.root || path.join(__dirname, 'content'),
+  root: getRoot() || _config.root || path.join(__dirname, 'content'),
 
   working:   path.join(__dirname, '.data'),
   published: path.join(__dirname, 'public', 'snapshot'),
