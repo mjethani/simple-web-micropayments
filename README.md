@@ -118,8 +118,6 @@ var config = {
   ],
 
   'validity': 3600,
-
-  'ttl': 10,
 };
 
 // Payments modules (e.g. swm.Bitcoin and swm.Ripple instances)

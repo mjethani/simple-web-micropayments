@@ -202,7 +202,8 @@ _class.prototype.router = function () {
 
       envelope.id = hex(sha256(Buffer.concat([ object,
                 signature || new Buffer(0) ])));
-      envelope.ttl = self.config.ttl;
+      envelope.ttl = isNaN(self.config.ttl) ? 10
+          : Math.max(1, self.config.ttl | 0);
 
       linkContent(key, envelope.id, function (error) {
         if (error) {
