@@ -1,0 +1,54 @@
+usage: swim [--root=<root>]
+       swim --help
+
+The program expects a config.json file in the current directory. If none is
+available, a different file may be specified using the CONFIG_FILE environment
+variable. The config file must be a valid JSON file.
+
+A sample config file:
+
+  {
+    "root": "./content",
+    "baseUrl": "http://example.com",
+    "payment": [
+      {
+        "network": "Bitcoin",
+        "key": "5Km2kuu7vtFDPpxywn4u3NLu8iSdrqhxWT8tUKjeEXs2f9yxoWz",
+        "price": 100000
+      }
+    ]
+  }
+
+Command line arguments
+
+  --root=<root>
+      Where your 402-protected content resides.
+
+      If not specified, the program looks for a value in the config file. If no
+      value is found in the config file, it serves from its own content
+      directory.
+
+  --help, -h, -?
+      Show help.
+
+Environment variables
+
+  CONFIG_FILE
+      Path to the config file to use.
+
+      By default the program looks for a file called 'config.json' in the
+      current directory.
+
+      This must be a valid JSON file.
+
+  PORT
+      Port number to listen on.
+
+      The default is 3000.
+
+See also
+
+  The project's README file
+
+  https://blog.manishjethani.com/simple-web-micropayments
+

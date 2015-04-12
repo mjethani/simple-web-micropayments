@@ -1,6 +1,20 @@
 /* Basic SWM app */
 
+var fs   = require('fs');
 var path = require('path');
+
+if (process.argv[2] === '--help'
+    || process.argv[2] === '-h'
+    || process.argv[2] === '-?') {
+  process.stdout.write(fs.readFileSync(path.join(__dirname, 'default.help')));
+  process.exit();
+}
+
+if (process.argv[2] && process.argv[2] !== '--root') {
+  console.error("See 'swim --help'.");
+  console.error();
+  process.exit(1);
+}
 
 var express = require('express');
 var logger = require('morgan');
