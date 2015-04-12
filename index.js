@@ -285,6 +285,23 @@ _class.prototype.initialize = function (paymentsModules) {
   self._paymentsModules.forEach(function (module) {
     self._paymentsModulesByNetwork[module.network()] = module;
   });
+
+  var paths = [
+    self.config.working,
+    path.join(self.config.working, 'content'),
+    path.join(self.config.working, 'tickets'),
+    self.config.published,
+  ];
+
+  paths.forEach(function (path) {
+    try {
+      fs.mkdirSync(path, 0755);
+    } catch (error) {
+      if (error.code !== 'EEXIST') {
+        throw error;
+      }
+    }
+  });
 };
 
 _class.prototype.run = function () {

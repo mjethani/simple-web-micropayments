@@ -31,19 +31,7 @@ $
 
   Change `<key>` to your Bitcoin private key. e.g. `5K7WRapB9oai1UZuQaSokQhT5hKs5dkB1yZoVtLUjBkeUjWmEmm`
 
- 2.  Run the init script:
-
-  ```console
-  $ . ./init
-  mkdir: created directory '.data'
-  mkdir: created directory '.data/content'
-  mkdir: created directory '.data/tickets'
-  mkdir: public: File exists
-  mkdir: created directory 'public/snapshot'
-  $ 
-  ```
-
- 3.  Run `npm install` to install any dependencies.
+ 2.  Run `npm install` to install any dependencies.
 
 ### Demo
 
