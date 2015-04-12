@@ -11,6 +11,9 @@
   "scripts": {
     "start": "node ./bin/www"
   },
+  "bin": {
+    "swim": "./bin/www"
+  },
   "keywords": [
     "micropayments",
     "402",
