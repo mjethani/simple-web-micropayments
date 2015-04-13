@@ -44,7 +44,7 @@ Environment variables
   PORT
       Port number to listen on.
 
-      The default is 3000.
+      The default is 40200.
 
 See also
 

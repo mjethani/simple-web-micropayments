@@ -29,7 +29,7 @@ function getRoot() {
 }
 
 function getPort() {
-  return process.env.PORT || 3000;
+  return process.env.PORT || 40200;
 }
 
 var _config = null;
