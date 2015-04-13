@@ -1,5 +1,3 @@
-[https://blog.manishjethani.com/simple-web-micropayments](https://blog.manishjethani.com/simple-web-micropayments)
-
 ```console
 $ git clone https://github.com/mjethani/swim.git
 Cloning into 'swim'...
@@ -14,23 +12,27 @@ $
 
 ### Configuration
 
- 1.  Edit the config.json file:
+Edit the config.json file:
 
-  ```javascript
-  {
-    "payment": [
-      {
-        "network": "Bitcoin",
-        "key": "<key>",
-        "price": 100000
-      }
-    ]
-  }
-  ```
+```javascript
+{
+  "payment": [
+    {
+      "network": "Bitcoin",
+      "key": "<key>",
+      "price": 100000
+    }
+  ]
+}
+```
 
-  Change `<key>` to your Bitcoin private key. e.g. `5K7WRapB9oai1UZuQaSokQhT5hKs5dkB1yZoVtLUjBkeUjWmEmm`
+Change `<key>` to your Bitcoin private key. e.g. `5K7WRapB9oai1UZuQaSokQhT5hKs5dkB1yZoVtLUjBkeUjWmEmm`
 
- 2.  Run `npm install` to install any dependencies.
+Install any dependencies:
+
+```console
+$ npm install
+```
 
 ### Demo
 
