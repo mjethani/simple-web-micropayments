@@ -48,7 +48,7 @@ $ DEBUG=swim:server npm start
 
 ```
 
-Then load [http://localhost:3000/hello-world.txt](http://localhost:3000/hello-world.txt) in your browser. You should get a "402 Payment Required" message.
+Then load [http://127.0.0.1:3000/hello-world.txt](http://127.0.0.1:3000/hello-world.txt) in your browser. You should get a "402 Payment Required" message.
 
 #### Make a payment
 
@@ -82,7 +82,7 @@ b7fe2f8a2f00a1a66a5f8f9dce2812569925efea436f170a126faf7654a94b5d
 $ 
 ```
 
-After about a minute, try to access [http://localhost:3000/snapshot/746308829575e17c3331bbcb00c0898b/hello-world.txt](http://localhost:3000/snapshot/746308829575e17c3331bbcb00c0898b/hello-world.txt) in your browser. It should return a text document saying "Hello, world!" This means your payment was accepted.
+After about a minute, try to access [http://127.0.0.1:3000/snapshot/746308829575e17c3331bbcb00c0898b/hello-world.txt](http://127.0.0.1:3000/snapshot/746308829575e17c3331bbcb00c0898b/hello-world.txt) in your browser. It should return a text document saying "Hello, world!" This means your payment was accepted.
 
 ### Module
 
