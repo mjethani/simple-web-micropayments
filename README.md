@@ -204,10 +204,6 @@ module.exports = function (key) {
 };
 ```
 
-### Bugs
+### Issues
 
 If you run into any bugs, please report them on the project's [Issues page](https://github.com/mjethani/swim/issues).
-
----
-
-Copyright (c) 2015 Manish Jethani
