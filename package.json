@@ -2,7 +2,7 @@
   "name": "swim",
   "version": "0.0.0",
   "private": true,
-  "description": "Simple Web Micropayments (SWM) reference implementation",
+  "description": "A Simple Web Micropayments (SWM) reference implementation with built-in support for Bitcoin and Ripple",
   "author": {
     "name": "Manish Jethani",
     "email": "manish.jethani@gmail.com",
