@@ -2,6 +2,10 @@ This is a reference implementation of the Simple Web Micropayments (SWM) scheme 
 
 [https://blog.manishjethani.com/simple-web-micropayments](https://blog.manishjethani.com/simple-web-micropayments)
 
+### git clone
+
+You can start by cloning the repository:
+
 ```console
 $ git clone https://github.com/mjethani/swim.git
 Cloning into 'swim'...
@@ -151,6 +155,52 @@ app.use('/', instance.router());
 Refer to the app.js file for a working example.
 
 [3]:http://expressjs.com/
+
+### Bitcoin, Ripple, and third-party modules
+
+Modules for Bitcoin and Ripple are already included in the package.
+
+You can write your own modules (e.g. Dogecoin) by implementing the following interface:
+
+```javascript
+var events = require('events');
+var util   = require('util');
+
+var _class = function (config) {
+  this.config = config;
+};
+
+util.inherits(_class, events.EventEmitter);
+
+_class.prototype.network = function () {
+  // Return the name of the network, e.g. Dogecoin
+};
+
+_class.prototype.sign = function (message) {
+  // Sign the message and return the signature
+
+  // Note: It must be possible to verify the signature using the
+  // payment address. Please see the bitcoin.js and ripple.js files
+  // for how to implement this.
+};
+
+_class.prototype.check = function (callback) {
+  // Check the network for incoming payments
+
+  // The callback takes an array of objects of the format
+  // "{ tags: [], value: 0 }", where tags is one or more "tags" found in
+  // the transaction (e.g. OP_RETURN value in Bitcoin), and value is the
+  // total amount received.
+
+  // Additionally, here your module can start listening for payments
+  // in the background (via WebSocket, for example) and emit a 'payment'
+  // event every time it receives a new one.
+};
+
+module.exports = function (key) {
+  return new _class({ key: key });
+};
+```
 
 ### Bugs
 
