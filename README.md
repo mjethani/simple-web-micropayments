@@ -1,3 +1,7 @@
+This is a reference implementation of the Simple Web Micropayments (SWM) scheme as briefly described here:
+
+[https://blog.manishjethani.com/simple-web-micropayments](https://blog.manishjethani.com/simple-web-micropayments)
+
 ```console
 $ git clone https://github.com/mjethani/swim.git
 Cloning into 'swim'...
@@ -84,7 +88,7 @@ $
 
 After about a minute, try to access [http://localhost:40200/snapshot/746308829575e17c3331bbcb00c0898b/hello-world.txt](http://localhost:40200/snapshot/746308829575e17c3331bbcb00c0898b/hello-world.txt) in your browser. It should return a text document saying "Hello, world!" This means your payment was accepted.
 
-### Module
+### Express plug-in
 
 You can plug this into your own [Express][3] app.
 
@@ -147,3 +151,11 @@ app.use('/', instance.router());
 Refer to the app.js file for a working example.
 
 [3]:http://expressjs.com/
+
+### Bugs
+
+If you run into any bugs, please report them on the project's [Issues page](https://github.com/mjethani/swim/issues).
+
+---
+
+Copyright (c) 2015 Manish Jethani
