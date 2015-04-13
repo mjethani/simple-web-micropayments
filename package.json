@@ -36,5 +36,9 @@
     "ripple-lib": "^0.12.1",
     "ws": "^0.7.1"
   },
+  "bugs": {
+    "url": "https://github.com/mjethani/swim/issues",
+    "email": "manish.jethani+swim@gmail.com"
+  },
   "license": "ISC"
 }
