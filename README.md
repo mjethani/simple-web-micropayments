@@ -18,6 +18,8 @@ $ cd swim
 $ 
 ```
 
+Install [Node.js](https://nodejs.org/).
+
 ### Configuration
 
 Edit the config.json file:
