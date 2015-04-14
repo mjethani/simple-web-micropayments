@@ -35,7 +35,13 @@ _class.prototype.sign = function (message) {
 
   var sig = key.signWithRecoverablePublicKey(bits);
 
-  return new Buffer(sjcl.codec.bytes.fromBits(sig));
+  var buffer = new Buffer(sjcl.codec.bytes.fromBits(sig));
+
+  while (buffer.length > 65 && buffer[0] === 0) {
+    buffer = buffer.slice(1);
+  }
+
+  return buffer;
 };
 
 _class.prototype.check = function (callback) {
@@ -100,6 +106,11 @@ module.exports = function (key) {
 };
 
 module.exports.verifySignature = function (signature, message, address) {
+  signature = Buffer.concat([
+      new Buffer((4 - signature.length % 4) % 4).fill(0),
+      signature
+      ]);
+
   var hex = crypto.Hash('sha256').update(message).digest().toString('hex');
   var bits = sjcl.codec.hex.toBits(hex);
 
