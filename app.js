@@ -10,7 +10,7 @@ if (process.argv[2] === '--help'
   process.exit();
 }
 
-if (process.argv[2] && process.argv[2] !== '--root') {
+if (process.argv[2] && process.argv[2].slice(0, 7) !== '--root=') {
   console.error("See 'swim --help'.");
   console.error();
   process.exit(1);
