@@ -57,6 +57,10 @@ var config = {
 
   'ttl': _config.ttl || 10,
 
+  'date': {
+    resolution: _config.date && _config.date.resolution || 'seconds'
+  },
+
   'content': {
     baseUri: (_config.baseUrl || 'http://localhost:' + getPort())
                + '/snapshot',

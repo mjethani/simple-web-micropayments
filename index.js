@@ -35,6 +35,17 @@ function base64(buffer) {
   return buffer.toString('base64');
 }
 
+function setDateResolution(date, resolution) {
+  switch (resolution) {
+  case 'hours':
+    date.setMinutes(0);
+  case 'minutes':
+    date.setSeconds(0);
+  case 'seconds':
+    date.setMilliseconds(0);
+  }
+}
+
 function fileHash(filename, algorithm, callback) {
   var hash = crypto.Hash(algorithm);
 
@@ -136,8 +147,14 @@ _class.prototype.router = function () {
   function generateTicket(digest, key, networks) {
     var paymentOption = selectPaymentOption(networks);
 
+    var date = new Date();
+
+    if (self.config.date) {
+      setDateResolution(date, self.config.date.resolution);
+    }
+
     var obj = {
-      'date': new Date().toISOString(),
+      'date': date.toISOString(),
       'content': {
         'digest': digest,
         'digestAlgorithm': 'md5',
