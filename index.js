@@ -221,15 +221,25 @@ _class.prototype.router = function () {
         return;
       }
 
+      var envelope = null;
+
       var ticketObject = generateTicket(digest, key, networks);
 
       var ticket = JSON.stringify(ticketObject);
+
+      if (!self._envelopeCache) {
+        self._envelopeCache = {};
+      } else if (envelope = self._envelopeCache[ticket]) {
+        callback(null, envelope, ticketObject);
+        return;
+      }
+
       var signature = sign(ticket,
           ticketObject.payment && ticketObject.payment.network);
 
       var object = new Buffer(ticket);
 
-      var envelope = {
+      envelope = {
         object: base64(object)
       };
 
@@ -250,6 +260,8 @@ _class.prototype.router = function () {
             if (error) {
               callback(error);
             } else {
+              self._envelopeCache[ticket] = envelope;
+
               callback(null, envelope, ticketObject);
             }
           });
