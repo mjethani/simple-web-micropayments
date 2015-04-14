@@ -1,11 +1,3 @@
-This is a reference implementation of the Simple Web Micropayments (SWM) scheme as briefly described here:
-
-[https://blog.manishjethani.com/simple-web-micropayments](https://blog.manishjethani.com/simple-web-micropayments)
-
-### git clone
-
-You can start by cloning the repository:
-
 ```console
 $ git clone https://github.com/mjethani/swim.git
 Cloning into 'swim'...
@@ -17,8 +9,6 @@ Checking connectivity... done
 $ cd swim
 $ 
 ```
-
-Install [Node.js](https://nodejs.org/).
 
 ### Configuration
 
@@ -193,10 +183,6 @@ _class.prototype.check = function (callback) {
   // "{ tags: [], value: 0 }", where tags is one or more "tags" found in
   // the transaction (e.g. OP_RETURN value in Bitcoin), and value is the
   // total amount received.
-
-  // Additionally, here your module can start listening for payments
-  // in the background (via WebSocket, for example) and emit a 'payment'
-  // event every time it receives a new one.
 };
 
 module.exports = function (key) {
