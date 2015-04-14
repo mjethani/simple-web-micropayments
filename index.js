@@ -348,9 +348,27 @@ _class.prototype.run = function () {
       return self._ticketCache[id] = null;
     }
 
-    return self._ticketCache[id] = JSON.parse(
-        new Buffer(JSON.parse(data).object, 'base64')
-    );
+    var envelope = null;
+
+    try {
+      envelope = JSON.parse(data);
+    } catch (error) {
+      return null;
+    }
+
+    var object = new Buffer(envelope.object, 'base64');
+
+    var ticketObject = null;
+
+    try {
+      ticketObject = JSON.parse(object);
+    } catch (error) {
+      return null;
+    }
+
+    self._ticketCache[id] = ticketObject;
+
+    return ticketObject;
   }
 
   function publish(id, callback) {
