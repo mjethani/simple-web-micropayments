@@ -8,6 +8,7 @@
     "email": "manish.jethani@gmail.com",
     "url": "http://manishjethani.com/"
   },
+  "homepage": "https://blog.manishjethani.com/simple-web-micropayments",
   "scripts": {
     "start": "node ./bin/www"
   },
